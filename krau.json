@@ -1,0 +1,25 @@
+{
+  "ftp": {
+    "host": "127.0.0.1",
+    "port": 22,
+    "username": "root",
+    "password": "password",
+    "remotePath": "/home/frontend/workspace",
+    "keepWrapFolder": true
+  },
+  "jsdoc": false,
+  "postcss": {},
+  "webpack": {
+    "banner": "@copyright ",
+    "no-common": false,
+    "no-html-inject": false,
+    "entry-prefixer": "",
+    "entry-filter": []
+  },
+  "default": {
+    "client": {
+      "port": 9000,
+      "publicPath": "."
+    }
+  }
+}

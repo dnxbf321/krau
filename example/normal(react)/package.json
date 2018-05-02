@@ -1,0 +1,14 @@
+{
+  "name": "normal(react)",
+  "version": "1.0.0",
+  "description": "description goes here",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Jason Deng",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "devDependencies": {}
+}

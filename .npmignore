@@ -1,0 +1,7 @@
+*.log*
+test*
+node_modules
+log
+tmp
+example
+compress-template
