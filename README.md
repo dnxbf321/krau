@@ -1,4 +1,4 @@
-# krau
+# krau：kr + au 氪金
 
 安装
 ```bash
@@ -17,6 +17,6 @@ cd path/to/project
 kr flow
 ```
 
-### [使用指南 Document](https://kr.gitbook.io/project/)
+### [使用指南 Document](https://krau.gitbook.io/project/)
 
 ### [examples](https://github.com/dnxbf321/krau/tree/master/example)

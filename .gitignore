@@ -1,6 +1,7 @@
 *.log*
-test*
+.DS_Store
 node_modules
 log
+test
 tmp
 template
