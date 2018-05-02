@@ -17,6 +17,6 @@ cd path/to/project
 kr flow
 ```
 
-### [使用指南 Document](https://krau.gitbook.io/project/)
+### [document](https://krau.gitbook.io/project/)
 
 ### [examples](https://github.com/dnxbf321/krau/tree/master/example)

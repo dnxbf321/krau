@@ -4,8 +4,8 @@
   "description": "Front-end scaffold.",
   "keywords": [
     "front-end",
-    "pack static files",
     "scaffold",
+    "pack files",
     "postcss",
     "sass-like",
     "ECMAScript 6",
