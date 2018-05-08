@@ -8,9 +8,15 @@
     "patterns": ["client/dist"],
     "keepWrapFolder": false
   },
-  "entryPrefixer": "",
   "jsdoc": false,
   "postcss": {},
+  "webpack": {
+    "banner": "@copyright ",
+    "no-common": false,
+    "no-html-inject": false,
+    "entry-prefixer": "",
+    "entry-filter": []
+  },
   "default": {
     "debug": false,
     "array1": ["arr1", "arr2"],
