@@ -2,24 +2,29 @@
 * @Author: dengjiayao
 * @Date:   2018-04-26 14:15:51
 * @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-27 14:31:47
+* @Last Modified time: 2018-05-11 16:23:22
 */
 const inquirer = require('inquirer')
-const taskWebpack = require('./webpack')
-const taskPre = require('./pre')
-const taskClean = require('./clean')
-const taskPack = require('./pack')
-const taskDeploy = require('./deploy')
-const taskAsset = require('./asset')
-const taskImage = require('./image')
-const taskBabelAsset = require('./babel-asset')
-const taskServeClient = require('./serve-client')
-const taskPostcss = require('./postcss')
+const utils = require('lazy-cache')(require)
+
+const TASKS = {
+  webpack: './webpack',
+  pre: './pre',
+  clean: './clean',
+  pack: './pack',
+  deploy: './deploy',
+  asset: './asset',
+  image: './image',
+  babelAsset: './babel-asset',
+  serveClient: './serve-client',
+  postcss: './postcss'
+}
 
 async function exec(tasks, env) {
   while (tasks.length) {
     let task = tasks.shift()
-    await task(env)
+    let taskExe = utils(task)
+    await taskExe()(env)
   }
 }
 
@@ -48,34 +53,37 @@ module.exports = () => {
       try {
         switch (answers.flow) {
           case 0:
-            exec([taskPre, taskAsset, taskBabelAsset, taskImage, taskServeClient], 'development')
+            exec(
+              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.serveClient],
+              'development'
+            )
             break
           case 1:
             exec(
-              [taskPre, taskAsset, taskBabelAsset, taskImage, taskWebpack, taskPostcss],
+              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
               'development'
             )
             break
           case 2:
             exec(
-              [taskPre, taskAsset, taskBabelAsset, taskImage, taskWebpack, taskPostcss],
+              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
               'experiment'
             )
             break
           case 3:
             exec(
-              [taskPre, taskAsset, taskBabelAsset, taskImage, taskWebpack, taskPostcss],
+              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
               'production'
             )
             break
           case 4:
-            exec([taskPack])
+            exec([TASKS.pack])
             break
           case 5:
-            exec([taskDeploy])
+            exec([TASKS.deploy])
             break
           case 6:
-            exec([taskClean])
+            exec([TASKS.clean])
             break
           default:
         }

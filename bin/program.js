@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const utils = require('lazy-cache')(require)
 const pkg = require('../package.json')
 const pkgUpdate = require('../scripts/util/pkg-update')
-const taskCreate = require('../scripts/task/create')
-const taskClean = require('../scripts/task/clean')
-const taskPack = require('../scripts/task/pack')
-const taskDeploy = require('../scripts/task/deploy')
-const taskFlow = require('../scripts/task/flow')
 
 pkgUpdate()
 
@@ -19,14 +15,17 @@ program
   .command('create')
   .description('create project')
   .action(() => {
-    taskCreate()
+    let exe = utils('../scripts/task/create')
+    exe()()
   })
 
+// 运行任务
 program
   .command('flow')
   .description('take workflow')
   .action(() => {
-    taskFlow()
+    let exe = utils('../scripts/task/flow')
+    exe()()
   })
 
 // clean 任务
@@ -34,7 +33,8 @@ program
   .command('clean')
   .description('remove all tmp folders')
   .action(() => {
-    taskClean()
+    let exe = utils('../scripts/task/clean')
+    exe()()
   })
 
 // pack 任务
@@ -42,7 +42,8 @@ program
   .command('pack')
   .description('pack files')
   .action(() => {
-    taskPack()
+    let exe = utils('../scripts/task/pack')
+    exe()()
   })
 
 // upload 任务
@@ -50,7 +51,8 @@ program
   .command('deploy')
   .description('deploy to remote server')
   .action(() => {
-    taskDeploy()
+    let exe = utils('../scripts/task/deploy')
+    exe()()
   })
 
 program.parse(process.argv)
