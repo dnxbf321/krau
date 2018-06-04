@@ -26,7 +26,7 @@ const staticRoot = path.join(contextPath, 'static')
 const krRoot = path.join(__dirname, '../../')
 
 const eslintrc = {
-  cache: true,
+  cache: false,
   configFile: path.join(projectRoot, '.eslintrc.js'),
   formatter: require('eslint-friendly-formatter')
 }
@@ -55,7 +55,10 @@ function getBaseConf(env) {
       path: path.join(projectRoot, 'client/dist')
     },
     resolve: {
-      modules: [path.join(projectRoot, 'node_modules'), path.join(krRoot, 'node_modules')],
+      modules: [
+        path.join(projectRoot, 'node_modules'),
+        path.join(krRoot, 'node_modules')
+      ],
       alias: {
         // see https://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
         // https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds
@@ -63,7 +66,10 @@ function getBaseConf(env) {
       }
     },
     resolveLoader: {
-      modules: [path.join(projectRoot, 'node_modules'), path.join(krRoot, 'node_modules')]
+      modules: [
+        path.join(projectRoot, 'node_modules'),
+        path.join(krRoot, 'node_modules')
+      ]
     },
     module: {
       rules: [
