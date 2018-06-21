@@ -67,12 +67,16 @@ module.exports = async env => {
 
   let PORT = krConf.client.port
   return new Promise((resolve, reject) => {
-    app.listen(PORT, 'localhost', err => {
+    app.listen(PORT, '0.0.0.0', err => {
       if (err) {
         console.log(colors.bgRed(`\n[task ${leftPad('dev-server', 12)}]`), err)
         reject(err)
       } else {
-        console.log(colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}] files on port: ${PORT}`))
+        console.log(
+          colors.bgGreen(
+            `\n[task ${leftPad('dev-server', 12)}] files on port: ${PORT}`
+          )
+        )
         resolve()
       }
     })
