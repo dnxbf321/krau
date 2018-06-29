@@ -1,19 +1,17 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:13:12
-* @Last Modified by:   tungjason
-* @Last Modified time: 2018-05-02 11:05:04
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:35:11
 */
 const extend = require('extend')
 const path = require('path')
 const requireUncached = require('require-uncached')
 const configJson = require('../../krau.json')
 
-const projectRoot = process.cwd()
 let projectConf = {}
-
 try {
-  projectConf = requireUncached(path.join(projectRoot, 'krau.json'))
+  projectConf = requireUncached(path.join(global.G_PATH.PROJECT, 'krau.json'))
 } catch (e) {
   projectConf = {}
 }
@@ -23,9 +21,15 @@ let config = extend(true, {}, configJson, projectConf)
 module.exports = (env, isDefinition) => {
   env = env || global.NODE_ENV || process.env.NODE_ENV
   let defaultConfig = config['default']
-  let envConfig = extend(true, {}, defaultConfig, config[env || 'production'] || {}, {
-    version: Date.now()
-  })
+  let envConfig = extend(
+    true,
+    {},
+    defaultConfig,
+    config[env || 'production'] || {},
+    {
+      version: Date.now()
+    }
+  )
   if (!isDefinition) {
     envConfig = extend(true, {}, envConfig, {
       ftp: config['ftp'],

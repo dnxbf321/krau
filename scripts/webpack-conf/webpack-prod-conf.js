@@ -36,20 +36,24 @@ module.exports = env => {
   if (config.webpack.banner) {
     plugins.push(
       new webpack.BannerPlugin({
-        banner: config.webpack.banner + ' | built at ' + new Date(config.version) + '\n',
+        banner:
+          config.webpack.banner +
+          ' | built at ' +
+          new Date(config.version) +
+          '\n',
         entryOnly: true
       })
     )
   }
 
-  return merge(
+  return merge.smart(
     getBaseConf(env),
     {
       cache: false,
       devtool: false,
       output: {
-        filename: '[name].js?[chunkhash]',
-        chunkFilename: '[name].js?[chunkhash]',
+        filename: '[name].[chunkhash:8].js',
+        chunkFilename: '[name].[chunkhash:8].js',
         publicPath
       },
       plugins,

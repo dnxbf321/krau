@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:08:05
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-02-08 17:44:26
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:54:11
 */
 const rimraf = require('rimraf')
 const mkdirp = require('mkdirp')
@@ -12,15 +12,14 @@ const path = require('path')
 const touchJsdoc = require('../util/touch-jsdoc')
 const touchEslintrc = require('../util/touch-eslintrc')
 
-const projectRoot = process.cwd()
 module.exports = () => {
-  rimraf.sync(path.join(projectRoot, 'client/dist'))
-  rimraf.sync(path.join(projectRoot, 'tmp'))
-  rimraf.sync(path.join(projectRoot, 'jsdoc'))
+  rimraf.sync(global.G_PATH.DIST)
+  rimraf.sync(path.join(global.G_PATH.PROJECT, 'tmp'))
+  rimraf.sync(path.join(global.G_PATH.PROJECT, 'jsdoc'))
 
-  mkdirp.sync(path.join(projectRoot, 'client/dist/static/img'), {})
-  mkdirp.sync(path.join(projectRoot, 'client/dist/static/css'), {})
-  mkdirp.sync(path.join(projectRoot, 'client/dist/static/js'), {})
+  mkdirp.sync(path.join(global.G_PATH.DIST, 'static/img'), {})
+  mkdirp.sync(path.join(global.G_PATH.DIST, 'static/css'), {})
+  mkdirp.sync(path.join(global.G_PATH.DIST, 'static/js'), {})
 
   touchJsdoc()
   touchEslintrc()

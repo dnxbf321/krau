@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2018-04-26 14:15:51
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-05-11 16:23:22
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 14:32:54
 */
 const inquirer = require('inquirer')
 const utils = require('lazy-cache')(require)
@@ -13,8 +13,6 @@ const TASKS = {
   clean: './clean',
   pack: './pack',
   deploy: './deploy',
-  asset: './asset',
-  image: './image',
   babelAsset: './babel-asset',
   serveClient: './serve-client',
   postcss: './postcss'
@@ -54,25 +52,25 @@ module.exports = () => {
         switch (answers.flow) {
           case 0:
             exec(
-              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.serveClient],
+              [TASKS.pre, TASKS.babelAsset, TASKS.serveClient],
               'development'
             )
             break
           case 1:
             exec(
-              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
+              [TASKS.pre, TASKS.babelAsset, TASKS.webpack, TASKS.postcss],
               'development'
             )
             break
           case 2:
             exec(
-              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
+              [TASKS.pre, TASKS.babelAsset, TASKS.webpack, TASKS.postcss],
               'experiment'
             )
             break
           case 3:
             exec(
-              [TASKS.pre, TASKS.asset, TASKS.babelAsset, TASKS.image, TASKS.webpack, TASKS.postcss],
+              [TASKS.pre, TASKS.babelAsset, TASKS.webpack, TASKS.postcss],
               'production'
             )
             break

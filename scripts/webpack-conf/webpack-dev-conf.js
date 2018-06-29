@@ -1,15 +1,15 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:21:05
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-26 16:17:33
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-28 16:19:51
 */
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const { getBaseConf, getCustomConf } = require('./webpack-base-conf')
 
-module.exports = env => {
+module.exports = () => {
   let baseConfig = getBaseConf('development')
   if (!baseConfig) {
     return
@@ -22,7 +22,7 @@ module.exports = env => {
 
   let customConfig = getCustomConf('development')
 
-  return merge(
+  return merge.smart(
     baseConfig,
     {
       cache: true,

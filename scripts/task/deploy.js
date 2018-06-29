@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:10:13
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-26 15:58:03
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:48:25
 */
 const scp = require('scp2')
 const glob = require('glob')
@@ -13,14 +13,20 @@ const fs = require('fs')
 const path = require('path')
 const getConfig = require('../util/config')
 
-const projectRoot = process.cwd()
-
 function collectPaths(patterns = ['*', '.*']) {
   let paths = []
   patterns.forEach(pattern => {
     let _paths = glob.sync(pattern, {
-      cwd: projectRoot,
-      ignore: ['.git', '*.log*', 'node_modules', 'zip', 'log', 'tmp', '.DS_Store']
+      cwd: global.G_PATH.PROJECT,
+      ignore: [
+        '.git',
+        '*.log*',
+        'node_modules',
+        'zip',
+        'log',
+        'tmp',
+        '.DS_Store'
+      ]
     })
     paths = paths.concat(_paths)
   })
@@ -29,7 +35,7 @@ function collectPaths(patterns = ['*', '.*']) {
 
 function deploy(currentPath, ftp, options) {
   const { remotePath, keepWrapFolder } = ftp
-  let local = path.resolve(projectRoot, currentPath)
+  let local = path.resolve(global.G_PATH.PROJECT, currentPath)
   let stats = fs.statSync(local)
   let remote
   if (keepWrapFolder) {
@@ -53,7 +59,10 @@ function deploy(currentPath, ftp, options) {
           console.log(colors.bgRed(`[task ${leftPad('deploy', 12)}]`), err)
           reject(err)
         } else {
-          console.log(colors.bgGreen(`[task ${leftPad('deploy', 12)}]`), local + ' => ' + remote)
+          console.log(
+            colors.bgGreen(`[task ${leftPad('deploy', 12)}]`),
+            local + ' => ' + remote
+          )
           resolve()
         }
       }

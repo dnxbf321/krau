@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:06:03
-* @Last Modified by:   tungjason
-* @Last Modified time: 2018-05-02 11:08:25
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:46:42
 */
 const colors = require('colors')
 const leftPad = require('left-pad')
@@ -12,20 +12,18 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 const fs = require('fs')
 
-const krRoot = path.join(__dirname, '../../')
-
-function createProjectFolder(projectRoot) {
-  if (fs.existsSync(projectRoot)) {
-    let stats = fs.statSync(projectRoot)
+function createProjectFolder(destPath) {
+  if (fs.existsSync(destPath)) {
+    let stats = fs.statSync(destPath)
     if (stats.isDirectory()) {
-      throw new Error(`${projectRoot} is already exists`)
+      throw new Error(`${destPath} is already exists`)
     }
   }
-  mkdirp.sync(projectRoot, {})
+  mkdirp.sync(destPath, {})
 }
 
-function makeFile(tpl, projectRoot) {
-  let zipFile = path.join(krRoot, 'template/' + tpl + '.zip')
+function makeFile(tpl, destPath) {
+  let zipFile = path.join(global.G_PATH.KR, 'template/' + tpl + '.zip')
   let unzipper = new DecompressZip(zipFile)
   unzipper.on('error', err => {
     throw new Error(err)
@@ -34,7 +32,7 @@ function makeFile(tpl, projectRoot) {
     console.log(colors.bgGreen(`[task ${leftPad('create', 12)}]`), 'done')
   })
   unzipper.extract({
-    path: projectRoot
+    path: destPath
   })
 }
 
@@ -65,10 +63,10 @@ module.exports = () => {
       }
     ])
     .then(answers => {
-      const projectRoot = path.join(process.cwd(), answers.pkg)
+      const destPath = path.join(process.cwd(), answers.pkg)
       try {
-        createProjectFolder(projectRoot)
-        makeFile(answers.tpl, projectRoot)
+        createProjectFolder(destPath)
+        makeFile(answers.tpl, destPath)
       } catch (err) {
         console.log(colors.bgRed(`[task ${leftPad('create', 12)}]`), err)
       }

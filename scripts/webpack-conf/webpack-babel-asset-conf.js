@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:17:46
-* @Last Modified by:   tungjason
-* @Last Modified time: 2018-05-02 11:08:14
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 14:40:04
 */
 const webpack = require('webpack')
 
@@ -13,10 +13,7 @@ const getDefinition = require('./webpack-definition')
 const getConfig = require('../util/config')
 const babelrc = require('../util/babelrc')
 
-const projectRoot = process.cwd()
-const contextPath = path.join(projectRoot, 'client')
-const assetRoot = path.join(contextPath, 'asset')
-const krRoot = path.join(__dirname, '../../')
+const assetRoot = path.join(global.G_PATH.CONTEXT, 'asset')
 
 function getEntry() {
   let ret = {}
@@ -24,9 +21,9 @@ function getEntry() {
     cwd: assetRoot
   })
   entries.forEach(it => {
-    let filePath = path.relative(assetRoot, it)
+    let filePath = 'asset/' + path.relative(assetRoot, it)
     let entryName = filePath.slice(0, -6).replace(/\\/g, '/')
-    ret[entryName] = './asset/' + filePath
+    ret[entryName] = './' + filePath
   })
   return ret
 }
@@ -40,11 +37,18 @@ module.exports = env => {
     return
   }
 
-  let plugins = [new webpack.IgnorePlugin(/vertx/), new webpack.DefinePlugin(definition)]
+  let plugins = [
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.DefinePlugin(definition)
+  ]
   if (config.webpack.banner) {
     plugins.push(
       new webpack.BannerPlugin({
-        banner: config.webpack.banner + ' | built at ' + new Date(config.version) + '\n',
+        banner:
+          config.webpack.banner +
+          ' | built at ' +
+          new Date(config.version) +
+          '\n',
         entryOnly: true
       })
     )
@@ -54,34 +58,38 @@ module.exports = env => {
     mode: env === 'development' ? 'development' : 'production',
     cache: false,
     devtool: env === 'development' ? '#eval-source-map' : false,
-    context: contextPath,
+    context: global.G_PATH.CONTEXT,
     entry: entries,
     output: {
-      filename: env === 'development' ? '[name].js' : '[name].js?[chunkhash]',
-      chunkFilename: env === 'development' ? '[name].js' : '[name].js?[chunkhash]',
-      path: path.join(projectRoot, 'client/dist/static'),
+      filename: env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
+      chunkFilename:
+        env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
+      path: global.G_PATH.DIST,
       publicPath: path
         .join(config.client.publicPath, '/')
         .replace(/\\/g, '/')
         .replace(/\:\/([^\/])/i, '://$1')
     },
     resolve: {
-      modules: [path.join(projectRoot, 'node_modules')]
+      modules: [path.join(global.G_PATH.PROJECT, 'node_modules')]
     },
     resolveLoader: {
-      modules: [path.join(projectRoot, 'node_modules'), path.join(krRoot, 'node_modules')]
+      modules: [
+        path.join(global.G_PATH.PROJECT, 'node_modules'),
+        path.join(global.G_PATH.KR, 'node_modules')
+      ]
     },
     module: {
       rules: [
         {
           test: /\.js$/,
-          include: [path.join(projectRoot, 'client')],
+          include: [global.G_PATH.CONTEXT],
           exclude: /node_modules/,
           use: [
             {
               loader: 'eslint-loader',
               options: {
-                configFile: path.join(projectRoot, '.eslintrc.js'),
+                configFile: path.join(global.G_PATH.PROJECT, '.eslintrc.js'),
                 formatter: require('eslint-friendly-formatter')
               }
             }

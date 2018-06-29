@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2018-04-25 17:01:40
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-25 17:52:05
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:35:40
 */
 const path = require('path')
 const url = require('url')
@@ -15,7 +15,7 @@ module.exports = options => {
   options = extend(
     true,
     {
-      src: process.cwd,
+      src: process.cwd(),
       publicPath: '',
       env: 'production'
     },
@@ -26,7 +26,10 @@ module.exports = options => {
 
   return async function(req, res, next) {
     await next()
-    if ((req.method !== 'GET' && req.method !== 'HEAD') || !/\.css/.test(req.url)) {
+    if (
+      (req.method !== 'GET' && req.method !== 'HEAD') ||
+      !/\.css/.test(req.url)
+    ) {
       return
     }
 

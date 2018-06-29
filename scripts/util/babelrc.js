@@ -1,15 +1,13 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:12:16
-* @Last Modified by:   tungjason
-* @Last Modified time: 2018-05-02 11:08:23
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:34:19
 */
 const fs = require('fs')
 const path = require('path')
 
-const krRoot = path.join(__dirname, '../../')
-
-let babelrc = fs.readFileSync(path.join(krRoot, '.babelrc'), {
+let babelrc = fs.readFileSync(path.join(global.G_PATH.KR, '.babelrc'), {
   encoding: 'utf8'
 })
 babelrc = JSON.parse(babelrc.toString())

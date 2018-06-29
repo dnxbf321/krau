@@ -1,27 +1,24 @@
 /*
 * @Author: dengjiayao
 * @Date:   2018-04-25 16:18:40
-* @Last Modified by:   tungjason
-* @Last Modified time: 2018-05-02 11:09:07
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 14:30:12
 */
 const webpack = require('webpack')
 const DevServer = require('webpack-dev-server')
 const colors = require('colors')
 const leftPad = require('left-pad')
 const path = require('path')
-const aliasEnv = require('../util/alias-env')
 const cssMiddleware = require('../util/express-postcss-middleware')
-const getWpConfig = require('../webpack-conf/webpack-dev-conf')
+const getWpDevConfig = require('../webpack-conf/webpack-dev-conf')
 const getNpxConfig = require('../util/config')
 
-const projectRoot = process.cwd()
-
-async function setup(env, krConf, wpConf) {
+async function setup(krConf, wpConf) {
   const options = {
     contentBase: [
-      path.join(projectRoot, 'client/dist/'),
-      path.join(projectRoot, 'client/dist/static/'),
-      path.join(projectRoot, 'client/assets/')
+      global.G_PATH.DIST,
+      path.join(global.G_PATH.DIST, 'static/'),
+      path.join(global.G_PATH.DIST, 'asset/')
     ],
     hot: true,
     headers: {
@@ -48,22 +45,20 @@ async function setup(env, krConf, wpConf) {
   let server = new DevServer(compiler, options)
   server.use(
     cssMiddleware({
-      src: path.join(projectRoot, 'client'),
+      src: global.G_PATH.CONTEXT,
       publicPath: wpConf.output.publicPath,
-      env
+      env: 'development'
     })
   )
 
   return server
 }
 
-module.exports = async env => {
-  env = aliasEnv(env)
+module.exports = async () => {
+  let krConf = getNpxConfig('development')
+  let wpConf = getWpDevConfig()
 
-  let krConf = getNpxConfig(env)
-  let wpConf = getWpConfig(env)
-
-  let app = await setup(env, krConf, wpConf)
+  let app = await setup(krConf, wpConf)
 
   let PORT = krConf.client.port
   return new Promise((resolve, reject) => {
@@ -73,9 +68,8 @@ module.exports = async env => {
         reject(err)
       } else {
         console.log(
-          colors.bgGreen(
-            `\n[task ${leftPad('dev-server', 12)}] files on port: ${PORT}`
-          )
+          colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`),
+          `files on port: ${PORT}`
         )
         resolve()
       }

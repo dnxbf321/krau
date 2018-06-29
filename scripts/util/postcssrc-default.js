@@ -1,10 +1,12 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:14:56
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-23 19:47:01
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 14:14:06
 */
 const path = require('path')
+const fs = require('fs')
+const { ncp } = require('ncp')
 const getConfig = require('./config')
 
 module.exports = env => {
@@ -21,16 +23,16 @@ module.exports = env => {
     'postcss-pxtorem': {
       rootValue: 16,
       propWhiteList: [],
-      selectorBlackList: [/^html$/, /\.norem/]
+      selectorBlackList: [/^html$/]
     },
     'rucksack-css': {
       fallbacks: true
     },
     'postcss-assets': {
-      loadPaths: [path.join(process.cwd(), 'client/static/img')],
+      loadPaths: [path.join(global.G_PATH.STATIC, 'img')],
       basePath: 'client',
-      baseUrl: config.client.publicPath,
-      cachebuster: true,
+      baseUrl: '',
+      cachebuster: false,
       relative: true
     },
     autoprefixer: {

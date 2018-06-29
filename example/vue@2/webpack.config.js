@@ -6,6 +6,16 @@
  */
 module.exports = function(rcObject) {
   return {
+    resolve: {
+      alias: {
+        // see https://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
+        // https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds
+        vue:
+          rcObject.env === 'development'
+            ? 'vue/dist/vue.js'
+            : 'vue/dist/vue.min.js'
+      }
+    },
     module: {
       rules: [
         {

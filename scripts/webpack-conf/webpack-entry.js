@@ -1,18 +1,16 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:22:50
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-26 17:06:34
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:32:01
 */
 const path = require('path')
 const glob = require('glob')
 const getConfig = require('../util/config')
 
-const projectRoot = path.join(process.cwd(), 'client')
-
 function collectJses(filters) {
-  let jses = glob.sync(projectRoot + '/static/**/*.wp.js', {
-    cwd: projectRoot
+  let jses = glob.sync(global.G_PATH.CONTEXT + '/static/**/*.wp.js', {
+    cwd: global.G_PATH.CONTEXT
   })
 
   let ret = []
@@ -40,10 +38,11 @@ module.exports = env => {
   let jses = collectJses(entryFilter)
   let ret = {}
   for (let it of jses) {
-    let filePath = path.relative(projectRoot, it)
+    let filePath = path.relative(global.G_PATH.CONTEXT, it)
     let entryName = filePath.slice(0, -6)
     if (entryPrefixer) {
-      entryName = path.dirname(entryName) + '/' + entryPrefixer + path.basename(entryName)
+      entryName =
+        path.dirname(entryName) + '/' + entryPrefixer + path.basename(entryName)
     }
     entryName = entryName.replace(/\\/g, '/')
     ret[entryName] = './' + filePath

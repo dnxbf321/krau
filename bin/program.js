@@ -5,6 +5,8 @@ const utils = require('lazy-cache')(require)
 const pkg = require('../package.json')
 const pkgUpdate = require('../scripts/util/pkg-update')
 
+require('./g-path')
+
 pkgUpdate()
 
 program.version(pkg.version)

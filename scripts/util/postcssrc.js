@@ -46,16 +46,7 @@ module.exports = env => {
   })
 
   let plugins = []
-  ;[
-    'postcss-easy-import',
-    'precss',
-    'postcss-pxtorem',
-    'rucksack-css',
-    'postcss-assets',
-    'autoprefixer',
-    'cssnano',
-    'postcss-reporter'
-  ].forEach(key => {
+  Object.keys(enable).forEach(key => {
     if (enable[key]) {
       let conf = extend(true, {}, postcssDefault[key], postcssConf[key] || {})
       let plugin = pkgs[key](conf)

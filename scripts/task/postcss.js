@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:07:28
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-23 19:25:55
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-06-29 10:52:34
 */
 const glob = require('glob')
 const mkdirp = require('mkdirp')
@@ -14,8 +14,6 @@ const fs = require('fs')
 const aliasEnv = require('../util/alias-env')
 const getPostcssrc = require('../util/postcssrc')
 
-const projectRoot = process.cwd()
-
 module.exports = async env => {
   env = aliasEnv(env)
 
@@ -23,13 +21,13 @@ module.exports = async env => {
 
   let csses = glob.sync('css/**/[!_]*.css', {
     nodir: true,
-    cwd: path.join(projectRoot, 'client/static')
+    cwd: global.G_PATH.STATIC
   })
 
   while (csses.length) {
     let it = csses.shift()
-    let fromPath = path.join(projectRoot, 'client/static', it)
-    let toPath = path.join(projectRoot, 'client/dist/static', it)
+    let fromPath = path.join(global.G_PATH.STATIC, it)
+    let toPath = path.join(global.G_PATH.DIST, 'static', it)
     let source = fs.readFileSync(fromPath)
     try {
       let result = await postcss(postcssPlugins).process(source.toString(), {
@@ -46,7 +44,7 @@ module.exports = async env => {
 
       console.log(
         colors.bgGreen(`[task ${leftPad('postcss', 12)}]`),
-        path.relative(projectRoot, result.opts.to)
+        path.relative(global.G_PATH.PROJECT, result.opts.to)
       )
     } catch (err) {
       console.log(colors.bgRed(`[task ${leftPad('postcss', 12)}]`), err)
