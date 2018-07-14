@@ -24,8 +24,6 @@ function formatDefinitions(obj) {
 module.exports = env => {
   var envConfig = getConfig(env, 'isDefinition')
   envConfig = formatDefinitions(envConfig)
-  envConfig['process.env'] = {
-    NODE_ENV: JSON.stringify(env)
-  }
+  envConfig['process.env.NODE_ENV'] = JSON.stringify(env)
   return envConfig
 }
