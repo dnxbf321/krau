@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-04-26 14:15:51
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:32:54
+* @Last Modified time: 2018-07-16 15:20:34
 */
 const inquirer = require('inquirer')
 const utils = require('lazy-cache')(require)
@@ -19,6 +19,7 @@ const TASKS = {
 }
 
 async function exec(tasks, env) {
+  process.env.NODE_ENV = env || 'production'
   while (tasks.length) {
     let task = tasks.shift()
     let taskExe = utils(task)
