@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:17:46
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:40:04
+* @Last Modified time: 2018-08-01 15:38:44
 */
 const webpack = require('webpack')
 
@@ -37,18 +37,11 @@ module.exports = env => {
     return
   }
 
-  let plugins = [
-    new webpack.IgnorePlugin(/vertx/),
-    new webpack.DefinePlugin(definition)
-  ]
+  let plugins = [new webpack.IgnorePlugin(/vertx/), new webpack.DefinePlugin(definition)]
   if (config.webpack.banner) {
     plugins.push(
       new webpack.BannerPlugin({
-        banner:
-          config.webpack.banner +
-          ' | built at ' +
-          new Date(config.version) +
-          '\n',
+        banner: config.webpack.banner + ' | built at ' + new Date(config.version) + '\n',
         entryOnly: true
       })
     )
@@ -62,8 +55,7 @@ module.exports = env => {
     entry: entries,
     output: {
       filename: env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
-      chunkFilename:
-        env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
+      chunkFilename: env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
       path: global.G_PATH.DIST,
       publicPath: path
         .join(config.client.publicPath, '/')
@@ -71,13 +63,10 @@ module.exports = env => {
         .replace(/\:\/([^\/])/i, '://$1')
     },
     resolve: {
-      modules: [path.join(global.G_PATH.PROJECT, 'node_modules')]
+      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules')]
     },
     resolveLoader: {
-      modules: [
-        path.join(global.G_PATH.PROJECT, 'node_modules'),
-        path.join(global.G_PATH.KR, 'node_modules')
-      ]
+      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules'), path.join(global.G_PATH.KR, 'node_modules')]
     },
     module: {
       rules: [

@@ -57,4 +57,13 @@ program
     exe()()
   })
 
+// 编译单文件，dist 文件符合 commonjs 规范
+program
+  .command('umd <library> <source> <dist>')
+  .description('generate source code to dist, dist code conforms to the umd spec.')
+  .action((library, source, dist) => {
+    let exe = utils('../scripts/task/generate-umd')
+    exe()(library, source, dist)
+  })
+
 program.parse(process.argv)

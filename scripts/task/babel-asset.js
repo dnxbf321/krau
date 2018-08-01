@@ -2,12 +2,11 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:04:04
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:45:23
+* @Last Modified time: 2018-07-31 17:17:50
 */
 const webpack = require('webpack')
 const colors = require('colors')
 const leftPad = require('left-pad')
-const glob = require('glob')
 const path = require('path')
 const getBabelAssetconf = require('../webpack-conf/webpack-babel-asset-conf')
 const aliasEnv = require('../util/alias-env')

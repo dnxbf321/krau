@@ -2,15 +2,11 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:14:56
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:14:06
+* @Last Modified time: 2018-07-31 17:53:40
 */
 const path = require('path')
-const fs = require('fs')
-const { ncp } = require('ncp')
-const getConfig = require('./config')
 
-module.exports = env => {
-  let config = getConfig(env)
+module.exports = () => {
   return {
     'postcss-easy-import': {
       prefix: '_'
@@ -36,15 +32,7 @@ module.exports = env => {
       relative: true
     },
     autoprefixer: {
-      browsers: [
-        'last 2 versions',
-        '> 5%',
-        'safari >= 8',
-        'ie >= 8',
-        'Firefox ESR',
-        'iOS >= 8',
-        'android >= 4'
-      ]
+      browsers: ['last 2 versions', '> 5%', 'safari >= 8', 'ie >= 8', 'Firefox ESR', 'iOS >= 8', 'android >= 4']
     },
     cssnano: {
       safe: true,

@@ -1,8 +1,8 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:15:48
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-23 19:42:46
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-07-31 18:27:30
 */
 const extend = require('extend')
 const postcssEasyImport = require('postcss-easy-import')
@@ -27,9 +27,9 @@ const pkgs = {
   'postcss-reporter': postcssRepoter
 }
 
-module.exports = env => {
+module.exports = (env, stdinConf = {}) => {
   let { postcss: postcssConf } = getConfig(env)
-  let postcssDefault = getPostcssDefault(env)
+  let postcssDefault = getPostcssDefault()
 
   let enable = {
     'postcss-easy-import': true,
@@ -42,13 +42,13 @@ module.exports = env => {
     'postcss-reporter': true
   }
   Object.keys(enable).forEach(key => {
-    enable[key] = key in postcssConf ? !!postcssConf[key] : enable[key]
+    enable[key] = key in stdinConf ? !!stdinConf[key] : key in postcssConf ? !!postcssConf[key] : enable[key]
   })
 
   let plugins = []
   Object.keys(enable).forEach(key => {
     if (enable[key]) {
-      let conf = extend(true, {}, postcssDefault[key], postcssConf[key] || {})
+      let conf = extend(true, {}, postcssDefault[key], postcssConf[key] || {}, stdinConf[key] || {})
       let plugin = pkgs[key](conf)
       plugins.push(plugin)
     }

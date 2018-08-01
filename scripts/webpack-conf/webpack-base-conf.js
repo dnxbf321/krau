@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:16:01
+* @Last Modified time: 2018-08-01 14:05:52
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -51,16 +51,10 @@ function getBaseConf(env) {
       path: global.G_PATH.DIST
     },
     resolve: {
-      modules: [
-        path.join(global.G_PATH.PROJECT, 'node_modules'),
-        path.join(global.G_PATH.KR, 'node_modules')
-      ]
+      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules'), path.join(global.G_PATH.KR, 'node_modules')]
     },
     resolveLoader: {
-      modules: [
-        path.join(global.G_PATH.PROJECT, 'node_modules'),
-        path.join(global.G_PATH.KR, 'node_modules')
-      ]
+      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules'), path.join(global.G_PATH.KR, 'node_modules')]
     },
     module: {
       rules: [
@@ -93,10 +87,7 @@ function getBaseConf(env) {
               loader: 'url-loader',
               options: {
                 limit: 1,
-                name:
-                  env === 'development'
-                    ? '[path][name].[ext]'
-                    : '[path][name].[hash:8].[ext]'
+                name: env === 'development' ? '[path][name].[ext]' : '[path][name].[hash:8].[ext]'
               }
             }
           ]
@@ -131,11 +122,7 @@ function getBaseConf(env) {
       new webpack.IgnorePlugin(/vertx/),
       new webpack.DefinePlugin(definition),
       new progressBarWebpackPlugin({
-        format:
-          colors.bgCyan(`[webpack ${leftPad('build', 9)}]`) +
-          '[:bar] ' +
-          colors.green.bold(':percent') +
-          ' (:elapsed seconds)',
+        format: colors.bgCyan(`[webpack ${leftPad('build', 9)}]`) + '[:bar] ' + colors.green.bold(':percent') + ' (:elapsed seconds)',
         clear: false
       }),
       new MiniCssExtractPlugin({
