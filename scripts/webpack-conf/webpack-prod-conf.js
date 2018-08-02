@@ -1,12 +1,11 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:31:07
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-26 14:10:01
+* @Last Modified by:   jiayao.deng
+* @Last Modified time: 2018-08-02 16:15:05
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const JsDocPlugin = require('jsdoc-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 const { getBaseConf, getCustomConf } = require('./webpack-base-conf')
@@ -26,21 +25,10 @@ module.exports = env => {
   }
 
   let plugins = []
-  if (config.jsdoc) {
-    plugins.push(
-      new JsDocPlugin({
-        conf: path.join(process.cwd(), '.jsdoc.json')
-      })
-    )
-  }
   if (config.webpack.banner) {
     plugins.push(
       new webpack.BannerPlugin({
-        banner:
-          config.webpack.banner +
-          ' | built at ' +
-          new Date(config.version) +
-          '\n',
+        banner: config.webpack.banner + ' | built at ' + new Date(config.version) + '\n',
         entryOnly: true
       })
     )

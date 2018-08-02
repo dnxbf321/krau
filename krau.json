@@ -7,7 +7,6 @@
     "remotePath": "/home/frontend/workspace",
     "keepWrapFolder": true
   },
-  "jsdoc": false,
   "postcss": {},
   "webpack": {
     "banner": "@copyright ",

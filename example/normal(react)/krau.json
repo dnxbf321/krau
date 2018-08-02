@@ -1,4 +1,5 @@
 {
+  "renderType": "react",
   "ftp": {
     "host": "10.0.0.10",
     "port": 22,
@@ -8,7 +9,6 @@
     "patterns": ["client/dist"],
     "keepWrapFolder": false
   },
-  "jsdoc": false,
   "postcss": {},
   "webpack": {
     "banner": "@copyright ",

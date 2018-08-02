@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 15:09:20
+* @Last Modified time: 2018-08-02 16:05:56
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -21,7 +21,6 @@ const getHTMLConf = require('./webpack-html-conf')
 const getCopyConf = require('./webpack-copy-conf')
 const getConfig = require('../util/config')
 const getPostcssrc = require('../util/postcssrc')
-const babelrc = require('../util/babelrc')
 
 // automatically look for .eslintrc files
 const eslintrc = {
@@ -75,8 +74,7 @@ function getBaseConf(env) {
           exclude: /node_modules/,
           use: [
             {
-              loader: 'babel-loader',
-              options: babelrc
+              loader: 'babel-loader'
             }
           ]
         },
@@ -151,7 +149,6 @@ function getCustomConf(env) {
     let conf = requireUncached(webpackConfJs)
     return conf({
       env,
-      babel: babelrc,
       eslint: eslintrc,
       postcss: getPostcssrc(env)
     })

@@ -1,0 +1,16 @@
+{
+  "comments": false,
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": ["last 2 versions", "> 5%", "safari >= 8", "ie >= 10", "Firefox ESR", "iOS >= 8", "android >= 4"]
+        }
+      }
+    ],
+    "stage-2"
+  ],
+  "plugins": ["transform-runtime"]
+}

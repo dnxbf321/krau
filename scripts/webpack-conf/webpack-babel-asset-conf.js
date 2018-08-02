@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:17:46
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 15:02:20
+* @Last Modified time: 2018-08-02 15:51:03
 */
 const webpack = require('webpack')
 
@@ -11,7 +11,6 @@ const glob = require('glob')
 
 const getDefinition = require('./webpack-definition')
 const getConfig = require('../util/config')
-const babelrc = require('../util/babelrc')
 
 const assetRoot = path.join(global.G_PATH.CONTEXT, 'asset')
 
@@ -89,8 +88,7 @@ module.exports = env => {
           exclude: /node_modules/,
           use: [
             {
-              loader: 'babel-loader',
-              options: babelrc
+              loader: 'babel-loader'
             }
           ]
         }
