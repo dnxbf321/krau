@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-01 14:05:52
+* @Last Modified time: 2018-08-02 15:09:20
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -23,9 +23,9 @@ const getConfig = require('../util/config')
 const getPostcssrc = require('../util/postcssrc')
 const babelrc = require('../util/babelrc')
 
+// automatically look for .eslintrc files
 const eslintrc = {
   cache: false,
-  configFile: path.join(global.G_PATH.PROJECT, '.eslintrc.js'),
   formatter: require('eslint-friendly-formatter')
 }
 

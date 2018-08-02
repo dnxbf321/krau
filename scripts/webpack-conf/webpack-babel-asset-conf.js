@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:17:46
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-01 15:38:44
+* @Last Modified time: 2018-08-02 15:02:20
 */
 const webpack = require('webpack')
 
@@ -78,7 +78,6 @@ module.exports = env => {
             {
               loader: 'eslint-loader',
               options: {
-                configFile: path.join(global.G_PATH.PROJECT, '.eslintrc.js'),
                 formatter: require('eslint-friendly-formatter')
               }
             }
