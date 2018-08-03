@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-03 11:51:34
+* @Last Modified time: 2018-08-03 14:48:44
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -43,6 +43,9 @@ function getBaseConf(env) {
     return
   }
 
+  const babelSkip = babelEnvDeps.exclude()
+  console.log(colors.bgYellow.black(`[babel ${leftPad('transform', 11)}]`), `babel transform would skip modules match ${babelSkip}`)
+
   let conf = {
     mode: env === 'development' ? 'development' : 'production',
     context: global.G_PATH.CONTEXT,
@@ -75,7 +78,7 @@ function getBaseConf(env) {
           // webpack-babel-env-deps analysis package.json fields (browser, module, main)
           // react-hot-loader/dist/react-hot-loader.development.js : exports is not defined
           // https://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
-          exclude: [babelEnvDeps.exclude(), /react-hot-loader/, /\/vue\//],
+          exclude: [babelSkip, /react-hot-loader/, /\/vue\//],
           use: [
             {
               loader: 'babel-loader'

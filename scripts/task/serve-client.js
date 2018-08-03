@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-04-25 16:18:40
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 14:30:12
+* @Last Modified time: 2018-08-03 14:52:13
 */
 const webpack = require('webpack')
 const DevServer = require('webpack-dev-server')
@@ -15,11 +15,7 @@ const getNpxConfig = require('../util/config')
 
 async function setup(krConf, wpConf) {
   const options = {
-    contentBase: [
-      global.G_PATH.DIST,
-      path.join(global.G_PATH.DIST, 'static/'),
-      path.join(global.G_PATH.DIST, 'asset/')
-    ],
+    contentBase: [global.G_PATH.DIST, path.join(global.G_PATH.DIST, 'static/'), path.join(global.G_PATH.DIST, 'asset/')],
     hot: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -67,10 +63,7 @@ module.exports = async () => {
         console.log(colors.bgRed(`\n[task ${leftPad('dev-server', 12)}]`), err)
         reject(err)
       } else {
-        console.log(
-          colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`),
-          `files on port: ${PORT}`
-        )
+        console.log(colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`), 'server runs in port: ' + colors.bgYellow.black(PORT))
         resolve()
       }
     })
