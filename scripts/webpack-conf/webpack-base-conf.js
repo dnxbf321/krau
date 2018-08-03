@@ -2,12 +2,13 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 16:05:56
+* @Last Modified time: 2018-08-03 11:51:34
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const progressBarWebpackPlugin = require('progress-bar-webpack-plugin')
+const babelEnvDeps = require('webpack-babel-env-deps')
 
 const path = require('path')
 const colors = require('colors')
@@ -71,7 +72,10 @@ function getBaseConf(env) {
         },
         {
           test: /\.jsx?$/,
-          exclude: /node_modules/,
+          // webpack-babel-env-deps analysis package.json fields (browser, module, main)
+          // react-hot-loader/dist/react-hot-loader.development.js : exports is not defined
+          // https://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
+          exclude: [babelEnvDeps.exclude(), /react-hot-loader/, /\/vue\//],
           use: [
             {
               loader: 'babel-loader'
