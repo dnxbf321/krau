@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-03 14:48:44
+* @Last Modified time: 2018-11-14 15:53:45
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -140,8 +140,30 @@ function getBaseConf(env) {
   }
   if (!webpackNoCommon) {
     conf.optimization.splitChunks = {
-      name: 'static/js/' + entryPrefixer + 'common',
-      minChunks: 2
+      minChunks: 1,
+      minSize: 30000,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      cacheGroups: {
+        'async-vendor': {
+          chunks: 'async',
+          name: 'async-vendor',
+          minChunks: 2,
+          priority: -10
+        },
+        async: {
+          chunks: 'async',
+          priority: -20,
+          reuseExistingChunk: true
+        },
+        default: {
+          chunks: 'initial',
+          name: 'static/js/' + entryPrefixer + 'common',
+          minChunks: 2,
+          priority: -30,
+          reuseExistingChunk: true
+        }
+      }
     }
   }
 
