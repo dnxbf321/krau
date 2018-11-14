@@ -2,16 +2,16 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:13:12
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 16:55:16
+* @Last Modified time: 2018-11-14 17:38:53
 */
 const extend = require('extend')
 const path = require('path')
-const requireUncached = require('require-uncached')
+const importFresh = require('import-fresh')
 const configJson = require('../../krau.json')
 
 let projectConf = {}
 try {
-  projectConf = requireUncached(path.join(global.G_PATH.PROJECT, 'krau.json'))
+  projectConf = importFresh(path.join(global.G_PATH.PROJECT, 'krau.json'))
 } catch (e) {
   projectConf = {}
 }

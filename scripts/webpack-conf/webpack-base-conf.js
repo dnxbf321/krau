@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2018-01-26 15:42:48
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-11-14 15:53:45
+* @Last Modified time: 2018-11-14 17:39:12
 */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -14,7 +14,7 @@ const path = require('path')
 const colors = require('colors')
 const leftPad = require('left-pad')
 
-const requireUncached = require('require-uncached')
+const importFresh = require('import-fresh')
 
 const getDefinition = require('./webpack-definition')
 const getEntry = require('./webpack-entry')
@@ -175,7 +175,7 @@ function getBaseConf(env) {
 function getCustomConf(env) {
   let webpackConfJs = path.join(global.G_PATH.PROJECT, 'webpack.config.js')
   try {
-    let conf = requireUncached(webpackConfJs)
+    let conf = importFresh(webpackConfJs)
     return conf({
       env,
       eslint: eslintrc,
