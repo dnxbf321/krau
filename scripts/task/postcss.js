@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:07:28
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 10:52:34
+* @Last Modified time: 2019-04-04 14:01:23
 */
 const glob = require('glob')
 const mkdirp = require('mkdirp')
@@ -33,19 +33,19 @@ module.exports = async env => {
       let result = await postcss(postcssPlugins).process(source.toString(), {
         from: fromPath,
         to: toPath,
-        map: {
-          inline: false
-        }
+        map:
+          env === 'production'
+            ? false
+            : {
+                inline: false
+              }
       })
 
       mkdirp.sync(path.dirname(result.opts.to))
       fs.writeFileSync(result.opts.to, result.css)
-      fs.writeFileSync(result.opts.to + '.map', result.map)
+      env !== 'production' && fs.writeFileSync(result.opts.to + '.map', result.map)
 
-      console.log(
-        colors.bgGreen(`[task ${leftPad('postcss', 12)}]`),
-        path.relative(global.G_PATH.PROJECT, result.opts.to)
-      )
+      console.log(colors.bgGreen(`[task ${leftPad('postcss', 12)}]`), path.relative(global.G_PATH.PROJECT, result.opts.to))
     } catch (err) {
       console.log(colors.bgRed(`[task ${leftPad('postcss', 12)}]`), err)
       return Promise.reject(err)
