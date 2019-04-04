@@ -2,7 +2,7 @@
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:17:46
 * @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 15:51:03
+* @Last Modified time: 2019-04-04 13:55:25
 */
 const webpack = require('webpack')
 
@@ -53,8 +53,8 @@ module.exports = env => {
     context: global.G_PATH.CONTEXT,
     entry: entries,
     output: {
-      filename: env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
-      chunkFilename: env === 'development' ? '[name].js' : '[name].[chunkhash:8].js',
+      filename: '[name].js',
+      chunkFilename: '[name].js',
       path: global.G_PATH.DIST,
       publicPath: path
         .join(config.client.publicPath, '/')
