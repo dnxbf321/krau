@@ -1,14 +1,12 @@
 /*
-* @Author: dengjiayao
-* @Date:   2018-01-26 15:42:48
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-11-14 17:39:12
-*/
+ * @Author: dengjiayao
+ * @Date:   2018-01-26 15:42:48
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-16 13:34:34
+ */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const progressBarWebpackPlugin = require('progress-bar-webpack-plugin')
-const babelEnvDeps = require('webpack-babel-env-deps')
 
 const path = require('path')
 const colors = require('colors')
@@ -26,7 +24,7 @@ const getPostcssrc = require('../util/postcssrc')
 // automatically look for .eslintrc files
 const eslintrc = {
   cache: false,
-  formatter: require('eslint-friendly-formatter')
+  formatter: require('eslint-friendly-formatter'),
 }
 
 function getBaseConf(env) {
@@ -43,21 +41,26 @@ function getBaseConf(env) {
     return
   }
 
-  const babelSkip = babelEnvDeps.exclude()
-  console.log(colors.bgYellow.black(`[babel ${leftPad('transform', 11)}]`), `babel transform would skip modules match ${babelSkip}`)
-
   let conf = {
     mode: env === 'development' ? 'development' : 'production',
     context: global.G_PATH.CONTEXT,
     entry: entry,
     output: {
-      path: global.G_PATH.DIST
+      path: global.G_PATH.DIST,
     },
     resolve: {
-      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules'), path.join(global.G_PATH.KR, 'node_modules')]
+      modules: [
+        'node_modules',
+        path.join(global.G_PATH.PROJECT, 'node_modules'),
+        path.join(global.G_PATH.KR, 'node_modules'),
+      ],
     },
     resolveLoader: {
-      modules: ['node_modules', path.join(global.G_PATH.PROJECT, 'node_modules'), path.join(global.G_PATH.KR, 'node_modules')]
+      modules: [
+        'node_modules',
+        path.join(global.G_PATH.PROJECT, 'node_modules'),
+        path.join(global.G_PATH.KR, 'node_modules'),
+      ],
     },
     module: {
       rules: [
@@ -68,22 +71,19 @@ function getBaseConf(env) {
           use: [
             {
               loader: 'eslint-loader',
-              options: eslintrc
-            }
+              options: eslintrc,
+            },
           ],
-          enforce: 'pre'
+          enforce: 'pre',
         },
         {
           test: /\.jsx?$/,
-          // webpack-babel-env-deps analysis package.json fields (browser, module, main)
-          // react-hot-loader/dist/react-hot-loader.development.js : exports is not defined
-          // https://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
-          exclude: [babelSkip, /react-hot-loader/, /\/vue\//],
+          exclude: [/node_modules/],
           use: [
             {
-              loader: 'babel-loader'
-            }
-          ]
+              loader: 'babel-loader',
+            },
+          ],
         },
         {
           test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)(\?.*)?$/,
@@ -92,23 +92,26 @@ function getBaseConf(env) {
               loader: 'url-loader',
               options: {
                 limit: 1,
-                name: env === 'development' ? '[path][name].[ext]' : '[path][name].[hash:8].[ext]'
-              }
-            }
-          ]
+                name: env === 'development' ? '[path][name].[ext]' : '[path][name].[hash:8].[ext]',
+              },
+            },
+          ],
         },
         {
           test: /\.css$/,
           use: [
             {
-              loader: MiniCssExtractPlugin.loader
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: env === 'development',
+              },
             },
             {
               loader: 'css-loader',
               options: {
                 import: false,
-                url: true
-              }
+                url: true,
+              },
             },
             {
               loader: 'postcss-loader',
@@ -116,27 +119,29 @@ function getBaseConf(env) {
                 ident: 'postcss',
                 plugins: function() {
                   return postcssPlugins
-                }
-              }
-            }
-          ]
-        }
-      ]
+                },
+              },
+            },
+          ],
+        },
+      ],
     },
     plugins: [
       new webpack.IgnorePlugin(/vertx/),
       new webpack.DefinePlugin(definition),
-      new progressBarWebpackPlugin({
-        format: colors.bgCyan(`[webpack ${leftPad('build', 9)}]`) + '[:bar] ' + colors.green.bold(':percent') + ' (:elapsed seconds)',
-        clear: false
-      }),
       new MiniCssExtractPlugin({
-        filename: env === 'development' ? '[name].css' : '[name].[hash:8].css'
-      })
+        filename: env === 'development' ? '[name].css' : '[name].[hash:8].css',
+      }),
     ],
     optimization: {
-      noEmitOnErrors: true
-    }
+      noEmitOnErrors: true,
+    },
+    stats: {
+      children: false,
+      colors: true,
+      entrypoints: false,
+      modules: false,
+    },
   }
   if (!webpackNoCommon) {
     conf.optimization.splitChunks = {
@@ -149,21 +154,21 @@ function getBaseConf(env) {
           chunks: 'async',
           name: 'async-vendor',
           minChunks: 2,
-          priority: -10
+          priority: -10,
         },
         async: {
           chunks: 'async',
           priority: -20,
-          reuseExistingChunk: true
+          reuseExistingChunk: true,
         },
         default: {
           chunks: 'initial',
           name: 'static/js/' + entryPrefixer + 'common',
           minChunks: 2,
           priority: -30,
-          reuseExistingChunk: true
-        }
-      }
+          reuseExistingChunk: true,
+        },
+      },
     }
   }
 
@@ -179,7 +184,7 @@ function getCustomConf(env) {
     return conf({
       env,
       eslint: eslintrc,
-      postcss: getPostcssrc(env)
+      postcss: getPostcssrc(env),
     })
   } catch (e) {
     return {}
@@ -188,5 +193,5 @@ function getCustomConf(env) {
 
 module.exports = {
   getBaseConf,
-  getCustomConf
+  getCustomConf,
 }

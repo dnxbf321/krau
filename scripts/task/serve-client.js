@@ -1,11 +1,13 @@
 /*
-* @Author: dengjiayao
-* @Date:   2018-04-25 16:18:40
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-03 14:52:13
-*/
+ * @Author: dengjiayao
+ * @Date:   2018-04-25 16:18:40
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-16 13:54:06
+ */
 const webpack = require('webpack')
 const DevServer = require('webpack-dev-server')
+// const Dashboard = require('webpack-dashboard')
+// const DashboardPlugin = require('webpack-dashboard/plugin')
 const colors = require('colors')
 const leftPad = require('left-pad')
 const path = require('path')
@@ -15,35 +17,42 @@ const getNpxConfig = require('../util/config')
 
 async function setup(krConf, wpConf) {
   const options = {
-    contentBase: [global.G_PATH.DIST, path.join(global.G_PATH.DIST, 'static/'), path.join(global.G_PATH.DIST, 'asset/')],
+    contentBase: [
+      global.G_PATH.DIST,
+      path.join(global.G_PATH.DIST, 'static/'),
+      path.join(global.G_PATH.DIST, 'asset/'),
+    ],
     hot: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'public, max-age=0'
+      'Cache-Control': 'public, max-age=0',
     },
     host: '127.0.0.1',
     port: krConf.client.port,
     publicPath: wpConf.output.publicPath,
     watchOptions: {
-      pool: true
+      pool: true,
     },
     stats: {
       children: false,
       colors: true,
       entrypoints: false,
-      modules: false
-    }
+      modules: false,
+    },
   }
-
+  
   DevServer.addDevServerEntrypoints(wpConf, options)
   let compiler = webpack(wpConf)
+
+  // const dashboard = new Dashboard()
+  // compiler.apply(new DashboardPlugin(dashboard.setData))
 
   let server = new DevServer(compiler, options)
   server.use(
     cssMiddleware({
       src: global.G_PATH.CONTEXT,
       publicPath: wpConf.output.publicPath,
-      env: 'development'
+      env: 'development',
     })
   )
 
@@ -63,7 +72,10 @@ module.exports = async () => {
         console.log(colors.bgRed(`\n[task ${leftPad('dev-server', 12)}]`), err)
         reject(err)
       } else {
-        console.log(colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`), 'server runs in port: ' + colors.bgYellow.black(PORT))
+        console.log(
+          colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`),
+          'server runs in port: ' + colors.bgYellow.black(PORT)
+        )
         resolve()
       }
     })
