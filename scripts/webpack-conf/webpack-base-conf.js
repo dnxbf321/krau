@@ -2,7 +2,7 @@
  * @Author: dengjiayao
  * @Date:   2018-01-26 15:42:48
  * @Last Modified by:   dengjiayao
- * @Last Modified time: 2019-06-16 13:34:34
+ * @Last Modified time: 2019-06-16 14:45:22
  */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -141,6 +141,10 @@ function getBaseConf(env) {
       colors: true,
       entrypoints: false,
       modules: false,
+    },
+    performance: {
+      maxEntrypointSize: Infinity,
+      maxAssetSize: Infinity,
     },
   }
   if (!webpackNoCommon) {
