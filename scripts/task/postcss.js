@@ -1,18 +1,17 @@
 /*
-* @Author: dengjiayao
-* @Date:   2017-12-27 13:07:28
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2019-04-04 14:01:23
-*/
+ * @Author: dengjiayao
+ * @Date:   2017-12-27 13:07:28
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:10:51
+ */
 const glob = require('glob')
 const mkdirp = require('mkdirp')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const postcss = require('postcss')
 const path = require('path')
 const fs = require('fs')
 const aliasEnv = require('../util/alias-env')
 const getPostcssrc = require('../util/postcssrc')
+const decorate = require('../util/decorate')
 
 module.exports = async env => {
   env = aliasEnv(env)
@@ -21,7 +20,7 @@ module.exports = async env => {
 
   let csses = glob.sync('css/**/[!_]*.css', {
     nodir: true,
-    cwd: global.G_PATH.STATIC
+    cwd: global.G_PATH.STATIC,
   })
 
   while (csses.length) {
@@ -37,20 +36,20 @@ module.exports = async env => {
           env === 'production'
             ? false
             : {
-                inline: false
-              }
+                inline: false,
+              },
       })
 
       mkdirp.sync(path.dirname(result.opts.to))
       fs.writeFileSync(result.opts.to, result.css)
       env !== 'production' && fs.writeFileSync(result.opts.to + '.map', result.map)
 
-      console.log(colors.bgGreen(`[task ${leftPad('postcss', 12)}]`), path.relative(global.G_PATH.PROJECT, result.opts.to))
+      console.log(decorate.info('postcss'), path.relative(global.G_PATH.PROJECT, result.opts.to))
     } catch (err) {
-      console.log(colors.bgRed(`[task ${leftPad('postcss', 12)}]`), err)
+      console.log(decorate.error('postcss'), err)
       return Promise.reject(err)
     }
   }
 
-  console.log(colors.bgGreen(`[task ${leftPad('postcss', 12)}]`), 'done')
+  console.log(decorate.info('postcss'), 'done')
 }

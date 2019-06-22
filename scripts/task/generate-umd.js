@@ -1,19 +1,18 @@
 /*
-* @Author: jiayao.deng
-* @Date:   2018-07-31 16:03:30
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-01 14:47:33
-*/
+ * @Author: jiayao.deng
+ * @Date:   2018-07-31 16:03:30
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:08:19
+ */
 const path = require('path')
 const fs = require('fs')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const webpack = require('webpack')
 const getCjsConf = require('../webpack-conf/webpack-umd-conf')
+const decorate = require('../util/decorate')
 
 function checkExtJs(src) {
   if (path.extname(src) !== '.js') {
-    console.log(colors.bgRed(`[task ${leftPad('umd', 12)}]`), `${src} should end with '.js'`)
+    console.log(decorate.error('umd'), `${src} should end with '.js'`)
     return false
   }
   return true
@@ -24,14 +23,14 @@ function pathExist(src) {
     fs.accessSync(src)
     return true
   } catch (e) {
-    console.log(colors.bgRed(`[task ${leftPad('umd', 12)}]`), `${src} is not accessible`)
+    console.log(decorate.error('umd'), `${src} is not accessible`)
     return false
   }
 }
 
 module.exports = (libraryName, sourcePath, distPath) => {
   if (!libraryName) {
-    console.log(colors.bgRed(`[task ${leftPad('umd', 12)}]`), 'library is not named')
+    console.log(decorate.error('umd'), 'library is not named')
     return false
   }
 
@@ -48,19 +47,19 @@ module.exports = (libraryName, sourcePath, distPath) => {
     return new Promise((resolve, reject) => {
       compiler.run((err, stats) => {
         if (err) {
-          console.log(colors.bgRed(`[task ${leftPad('umd', 12)}]`), err)
+          console.log(decorate.error('umd'), err)
           reject(err)
         } else {
           console.log(
-            colors.bgGreen(`[task ${leftPad('umd', 12)}]`),
+            decorate.info('umd')
             stats.toString({
               children: false,
               colors: true,
               entrypoints: false,
-              modules: false
+              modules: false,
             })
           )
-          console.log(colors.bgGreen(`[task ${leftPad('umd', 12)}]`), distPath + ' generagted')
+          console.log(decorate.info('umd'), distPath + ' generagted')
           resolve()
         }
       })

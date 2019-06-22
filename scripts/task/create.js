@@ -1,16 +1,15 @@
 /*
-* @Author: dengjiayao
-* @Date:   2017-12-27 13:06:03
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 10:46:42
-*/
-const colors = require('colors')
-const leftPad = require('left-pad')
+ * @Author: dengjiayao
+ * @Date:   2017-12-27 13:06:03
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:04:11
+ */
 const DecompressZip = require('decompress-zip')
 const inquirer = require('inquirer')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const fs = require('fs')
+const decorate = require('../util/decorate')
 
 function createProjectFolder(destPath) {
   if (fs.existsSync(destPath)) {
@@ -29,10 +28,10 @@ function makeFile(tpl, destPath) {
     throw new Error(err)
   })
   unzipper.on('extract', () => {
-    console.log(colors.bgGreen(`[task ${leftPad('create', 12)}]`), 'done')
+    console.log(decorate.info('create'), 'done')
   })
   unzipper.extract({
-    path: destPath
+    path: destPath,
   })
 }
 
@@ -47,7 +46,7 @@ module.exports = () => {
       {
         type: 'input',
         name: 'pkg',
-        message: 'Name the project:'
+        message: 'Name the project:',
       },
       {
         type: 'list',
@@ -56,11 +55,11 @@ module.exports = () => {
         choices: [
           {
             name: 'normal (compatible with react.js)',
-            value: 'normal(react)'
+            value: 'normal(react)',
           },
-          { name: 'vue@2.x', value: 'vue@2' }
-        ]
-      }
+          { name: 'vue@2.x', value: 'vue@2' },
+        ],
+      },
     ])
     .then(answers => {
       const destPath = path.join(process.cwd(), answers.pkg)
@@ -68,7 +67,7 @@ module.exports = () => {
         createProjectFolder(destPath)
         makeFile(answers.tpl, destPath)
       } catch (err) {
-        console.log(colors.bgRed(`[task ${leftPad('create', 12)}]`), err)
+        console.log(decorate.error('create'), err)
       }
     })
 }

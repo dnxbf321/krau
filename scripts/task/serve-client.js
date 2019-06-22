@@ -2,14 +2,12 @@
  * @Author: dengjiayao
  * @Date:   2018-04-25 16:18:40
  * @Last Modified by:   dengjiayao
- * @Last Modified time: 2019-06-16 13:54:06
+ * @Last Modified time: 2019-06-22 11:11:52
  */
 const webpack = require('webpack')
 const DevServer = require('webpack-dev-server')
 // const Dashboard = require('webpack-dashboard')
 // const DashboardPlugin = require('webpack-dashboard/plugin')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const path = require('path')
 const cssMiddleware = require('../util/express-postcss-middleware')
 const getWpDevConfig = require('../webpack-conf/webpack-dev-conf')
@@ -33,14 +31,9 @@ async function setup(krConf, wpConf) {
     watchOptions: {
       pool: true,
     },
-    stats: {
-      children: false,
-      colors: true,
-      entrypoints: false,
-      modules: false,
-    },
+    stats: 'errors-only',
   }
-  
+
   DevServer.addDevServerEntrypoints(wpConf, options)
   let compiler = webpack(wpConf)
 
@@ -69,13 +62,8 @@ module.exports = async () => {
   return new Promise((resolve, reject) => {
     app.listen(PORT, '0.0.0.0', err => {
       if (err) {
-        console.log(colors.bgRed(`\n[task ${leftPad('dev-server', 12)}]`), err)
         reject(err)
       } else {
-        console.log(
-          colors.bgGreen(`\n[task ${leftPad('dev-server', 12)}]`),
-          'server runs in port: ' + colors.bgYellow.black(PORT)
-        )
         resolve()
       }
     })

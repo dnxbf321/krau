@@ -1,14 +1,13 @@
 /*
-* @Author: dengjiayao
-* @Date:   2017-12-27 13:10:39
-* @Last Modified by:   dengjiayao
-* @Last Modified time: 2018-04-25 17:31:43
-*/
+ * @Author: dengjiayao
+ * @Date:   2017-12-27 13:10:39
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:12:33
+ */
 const webpack = require('webpack')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const getProdConf = require('../webpack-conf/webpack-prod-conf')
 const aliasEnv = require('../util/alias-env')
+const decorate = require('../util/decorate')
 
 module.exports = env => {
   env = aliasEnv(env)
@@ -22,16 +21,16 @@ module.exports = env => {
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) {
-        console.log(colors.bgRed(`[task ${leftPad('webpack', 12)}]`), err)
+        console.log(decorate.error('webpack'), err)
         reject()
       } else {
         console.log(
-          colors.bgGreen(`[task ${leftPad('webpack', 12)}]`),
+          decorate.info('webpack'),
           stats.toString({
             children: false,
             colors: true,
             entrypoints: false,
-            modules: false
+            modules: false,
           })
         )
         resolve()

@@ -2,16 +2,14 @@
  * @Author: dengjiayao
  * @Date:   2018-01-26 15:42:48
  * @Last Modified by:   dengjiayao
- * @Last Modified time: 2019-06-16 14:45:22
+ * @Last Modified time: 2019-06-22 11:13:17
  */
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const WebpackBar = require('webpackbar')
 
 const path = require('path')
-const colors = require('colors')
-const leftPad = require('left-pad')
-
 const importFresh = require('import-fresh')
 
 const getDefinition = require('./webpack-definition')
@@ -128,6 +126,7 @@ function getBaseConf(env) {
     },
     plugins: [
       new webpack.IgnorePlugin(/vertx/),
+      new WebpackBar(),
       new webpack.DefinePlugin(definition),
       new MiniCssExtractPlugin({
         filename: env === 'development' ? '[name].css' : '[name].[hash:8].css',

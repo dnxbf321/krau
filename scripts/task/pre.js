@@ -1,15 +1,14 @@
 /*
 * @Author: dengjiayao
 * @Date:   2017-12-27 13:08:05
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 16:14:21
+* @Last Modified by:   dengjiayao
+* @Last Modified time: 2019-06-22 11:11:23
 */
 const rimraf = require('rimraf')
 const mkdirp = require('mkdirp')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const path = require('path')
 const touchEslintrc = require('../util/touch-eslintrc')
+const decorate = require('../util/decorate')
 
 module.exports = () => {
   rimraf.sync(global.G_PATH.DIST)
@@ -21,6 +20,6 @@ module.exports = () => {
 
   touchEslintrc()
 
-  console.log(colors.bgGreen(`[task ${leftPad('pre', 12)}]`), 'done')
+  console.log(decorate.info('pre'), 'done')
   return Promise.resolve()
 }

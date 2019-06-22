@@ -1,32 +1,23 @@
 /*
-* @Author: dengjiayao
-* @Date:   2017-12-27 13:10:13
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-06-29 10:48:25
-*/
+ * @Author: dengjiayao
+ * @Date:   2017-12-27 13:10:13
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:06:03
+ */
 const scp = require('scp2')
 const glob = require('glob')
 const extend = require('extend')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const fs = require('fs')
 const path = require('path')
 const getConfig = require('../util/config')
+const decorate = require('../util/decorate')
 
 function collectPaths(patterns = ['*', '.*']) {
   let paths = []
   patterns.forEach(pattern => {
     let _paths = glob.sync(pattern, {
       cwd: global.G_PATH.PROJECT,
-      ignore: [
-        '.git',
-        '*.log*',
-        'node_modules',
-        'zip',
-        'log',
-        'tmp',
-        '.DS_Store'
-      ]
+      ignore: ['.git', '*.log*', 'node_modules', 'zip', 'log', 'tmp', '.DS_Store'],
     })
     paths = paths.concat(_paths)
   })
@@ -52,17 +43,14 @@ function deploy(currentPath, ftp, options) {
     scp.scp(
       local,
       extend(options, {
-        path: remote
+        path: remote,
       }),
       err => {
         if (err) {
-          console.log(colors.bgRed(`[task ${leftPad('deploy', 12)}]`), err)
+          console.log(decorate.error('deploy'), err)
           reject(err)
         } else {
-          console.log(
-            colors.bgGreen(`[task ${leftPad('deploy', 12)}]`),
-            local + ' => ' + remote
-          )
+          console.log(decorate.info('deploy'), local + ' => ' + remote)
           resolve()
         }
       }
@@ -79,7 +67,7 @@ module.exports = async () => {
     port: 22,
     host: ftp.host,
     username: ftp.username,
-    password: ftp.password
+    password: ftp.password,
   }
   let client = new scp.Client(options)
 
@@ -91,14 +79,11 @@ module.exports = async () => {
     try {
       await deploy(currentPath, ftp, options)
     } catch (err) {
-      console.log(colors.bgRed(`[task ${leftPad('deploy', 12)}]`), err)
+      console.log(decorate.error('deploy'), err)
     }
   }
 
   client.close()
 
-  console.log(
-    colors.bgGreen(`[task ${leftPad('deploy', 12)}]`),
-    'done in ' + (Date.now() - time) / 1000 + 's'
-  )
+  console.log(decorate.info('deploy'), 'done in ' + (Date.now() - time) / 1000 + 's')
 }

@@ -1,19 +1,18 @@
 /*
-* @Author: dengjiayao
-* @Date:   2017-12-27 13:04:44
-* @Last Modified by:   jiayao.deng
-* @Last Modified time: 2018-08-02 16:14:02
-*/
+ * @Author: dengjiayao
+ * @Date:   2017-12-27 13:04:44
+ * @Last Modified by:   dengjiayao
+ * @Last Modified time: 2019-06-22 11:02:08
+ */
 const rimraf = require('rimraf')
-const colors = require('colors')
-const leftPad = require('left-pad')
 const path = require('path')
+const decorate = require('../util/decorate')
 
 module.exports = () => {
   rimraf.sync(global.G_PATH.DIST)
   rimraf.sync(path.join(global.G_PATH.PROJECT, 'tmp'))
   rimraf.sync(path.join(global.G_PATH.PROJECT, 'zip'))
 
-  console.log(colors.bgGreen(`[task ${leftPad('clean', 12)}]`), 'done')
+  console.log(decorate.info('clean'), 'done')
   return Promise.resolve()
 }
